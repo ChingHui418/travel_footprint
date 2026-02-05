@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的旅遊足跡 ✈️</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        h1 { color: #333; }
+        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; width: 100%; max-width: 1200px; }
+        .card { background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden; transition: transform 0.2s; }
+        .card:hover { transform: translateY(-5px); }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .card-content { padding: 15px; }
+        .card-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; color: #2c3e50; }
+        .card-date { font-size: 0.9em; color: #888; margin-bottom: 10px; }
+        .card-text { color: #555; line-height: 1.5; }
+        .location-tag { display: inline-block; background-color: #e1f5fe; color: #0288d1; padding: 3px 8px; border-radius: 15px; font-size: 0.8em; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>🌍 Jenny 的旅遊足跡</h1>
+    <div class="container" id="app">
+        <p>正在載入旅遊回憶...</p>
+    </div>
+
+    <script>
+        // 這是前端最核心的 JavaScript，負責去跟你的 Java 後端要資料
+        const apiUrl = 'http://localhost:8080/footprints'; // 你的 Controller 網址
+
+        fetch(apiUrl)
+            .then(response => response.json()) // 把回傳的資料轉成 JSON
+            .then(data => {
+                const container = document.getElementById('app');
+                container.innerHTML = ''; // 清空載入文字
+
+                if (data.length === 0) {
+                    container.innerHTML = '<p>目前還沒有任何足跡，快去新增一筆吧！</p>';
+                    return;
+                }
+
+                // 把每一筆資料 (footprint) 變成 HTML 卡片
+                data.forEach(fp => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    
+                    // 如果沒有照片，就用一張預設圖
+                    const imageSrc = fp.photoUrl ? fp.photoUrl : 'https://via.placeholder.com/300x200?text=No+Image';
+
+                    card.innerHTML = `
+                        <img src="${imageSrc}" alt="${fp.title}">
+                        <div class="card-content">
+                            <span class="location-tag">📍 ${fp.location}</span>
+                            <div class="card-title">${fp.title}</div>
+                            <div class="card-date">📅 ${fp.travelDate}</div>
+                            <p class="card-text">${fp.description}</p>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('app').innerHTML = '<p style="color:red">連線失敗，請確認後端程式有沒有在跑！</p>';
+            });
+    </script>
+</body>
+</html>
