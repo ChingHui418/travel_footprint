@@ -11,26 +11,27 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-@Data                  // Lombok: 自動產生 Getter/Setter, toString 等
-@Entity                // 告訴 JPA 這是一個對應資料庫的實體
-@Table(name = "FootPrints") // 對應 SQL Server 中的 "FootPrints" 資料表
+@Data
+@Entity
+@Table(name = "FootPrints")
 public class FootPrint {
 
     @Id // 主鍵 (Primary Key)
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 自動跳號 (Identity)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)
-    private String title; // 足跡標題
+    private String title;
 
     @Column(length = 1000)
-    private String description; // 心得描述
+    private String description;
 
-    private String location; // 地點
+    private String location;
 
-    private LocalDate travelDate; // 旅遊日期
+    private LocalDate travelDate;
+    
+    private LocalDate endDate;
 
-    // "照片連結" 或 "建立時間" 欄位
     @Column(name = "photoUrl")
     private String photoUrl;
     private LocalDateTime createdAt;

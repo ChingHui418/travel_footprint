@@ -39,6 +39,7 @@ public class FootPrintS {
                 existing.setDescription(newFootPrint.getDescription());
                 existing.setTitle(newFootPrint.getTitle());
                 existing.setTravelDate(newFootPrint.getTravelDate());
+                existing.setEndDate(newFootPrint.getEndDate());
                 existing.setPhotoUrl(newFootPrint.getPhotoUrl());
                 return repository.save(existing);
         })

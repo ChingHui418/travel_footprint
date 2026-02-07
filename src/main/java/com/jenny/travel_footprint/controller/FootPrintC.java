@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,15 +15,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jenny.travel_footprint.modal.FootPrint;
+import com.jenny.travel_footprint.repository.FootPrintRS;
 import com.jenny.travel_footprint.service.FootPrintS;
 
 @RestController
 @RequestMapping("/footprints")
 @CrossOrigin(origins = "*")
 public class FootPrintC {
-
     @Autowired
     private FootPrintS service;
+    @Autowired
+    private FootPrintRS repository;
 
     // 取得所有足跡
     @GetMapping
@@ -57,4 +60,11 @@ public class FootPrintC {
             return ResponseEntity.notFound().build();
         }
     }
+
+    // 刪除足跡
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Integer id) {
+        repository.deleteById(id);
+    }
+
 }
